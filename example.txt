@@ -1,12 +1,16 @@
 ds 형태
-        { "user": "mopic1", "key": "test_key1", "expiration_date": "20220615" },
-        { "user": "mopic2", "key": "test_key2", "expiration_date": "20210615" },
-        { "user": "mopic3", "key": "test_key3", "expiration_date": "20230615" }
+{ "user": "mopic1", "key": "test_key1", "expiration_date": "20220615" },
+{ "user": "mopic2", "key": "test_key2", "expiration_date": "20210615" },
+{ "user": "mopic3", "key": "test_key3", "expiration_date": "20230615" }
 
 request format
 {"user":"mopic1", "key":"test_key1", "request_date":current_date_time}
 {"user":"mopic2", "key":"test_key2", "request_date":current_date_time}
 {"user":"mopic3", "key":"test_key2", "request_date":current_date_time}
+=> 현재 날짜는 서버에서 요청받은 시간 기준으로 수행하도록 함. current_date_time을 사용할수 없음
+{"user":"mopic1", "key":"test_key1"}
+{"user":"mopic2", "key":"test_key2"}
+{"user":"mopic3", "key":"test_key2"}
 
 response format
 {"user":request_name, "status":"SUCCESS", "reason":""}
@@ -15,6 +19,6 @@ response format
 {"user":request_name, "status":"FAILED", "reason":"INVALID_KEY"}
 
 CURL 명령어
-curl -H "Content-Type: application/json" -X POST -d "{\"user\":\"mopic1\",\"key\":\"test_key1\",\"date\":current_date_time}" http://localhost:3000/validUser
-curl -H "Content-Type: application/json" -X POST -d "{\"user\":\"mopic2\",\"key\":\"test_key2\",\"date\":current_date_time}" http://localhost:3000/validUser
-curl -H "Content-Type: application/json" -X POST -d "{\"user\":\"mopic3\",\"key\":\"test_key2\",\"date\":current_date_time}" http://localhost:3000/validUser
+curl -H "Content-Type: application/json" -X POST -d "{\"user\":\"mopic1\",\"key\":\"test_key1\"}" http://localhost:3000/validUser
+curl -H "Content-Type: application/json" -X POST -d "{\"user\":\"mopic2\",\"key\":\"test_key2\"}" http://localhost:3000/validUser
+curl -H "Content-Type: application/json" -X POST -d "{\"user\":\"mopic3\",\"key\":\"test_key2\"}" http://localhost:3000/validUser
