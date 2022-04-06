@@ -8,6 +8,7 @@ request format
 {"user":"mopic2", "key":"test_key2", "request_date":current_date_time}
 {"user":"mopic3", "key":"test_key2", "request_date":current_date_time}
 => 현재 날짜는 서버에서 요청받은 시간 기준으로 수행하도록 함. current_date_time을 사용할수 없음
+
 {"user":"mopic1", "key":"test_key1"}
 {"user":"mopic2", "key":"test_key2"}
 {"user":"mopic3", "key":"test_key2"}
@@ -18,7 +19,33 @@ response format
 {"user":request_name, "status":"FAILED", "reason":"EXPIRED"}
 {"user":request_name, "status":"FAILED", "reason":"INVALID_KEY"}
 
-CURL 명령어
+CURL 명령어 ( 로컬 CMD )
 curl -H "Content-Type: application/json" -X POST -d "{\"user\":\"mopic1\",\"key\":\"test_key1\"}" http://localhost:3000/validUser
 curl -H "Content-Type: application/json" -X POST -d "{\"user\":\"mopic2\",\"key\":\"test_key2\"}" http://localhost:3000/validUser
 curl -H "Content-Type: application/json" -X POST -d "{\"user\":\"mopic3\",\"key\":\"test_key2\"}" http://localhost:3000/validUser
+
+CURL 명령어 ( Docker용  CMD )
+curl -H "Content-Type: application/json" -X POST -d "{\"user\":\"mopic1\",\"key\":\"test_key1\"}" http://localhost:3001/validUser
+curl -H "Content-Type: application/json" -X POST -d "{\"user\":\"mopic2\",\"key\":\"test_key2\"}" http://localhost:3001/validUser
+curl -H "Content-Type: application/json" -X POST -d "{\"user\":\"mopic3\",\"key\":\"test_key2\"}" http://localhost:3001/validUser
+
+// Docker
+.dockignore 파일 만들기 
+  => node_modules 제외하기 위함
+
+Dockerfile 파일 만들기
+  => 이미지에 사용할 노드 버전 밑 컨테이너 올라갈때 실행할 명령어 모음
+
+
+docker 이미지 만들기
+  1. 프로젝트 경로의 터미널에서 아래 명령 수행
+  => docker build -t rest-sample .
+
+  2. 에러없이 완료되면 도커 데스크탑에 이미지가 올라간것 확인
+
+  3. 아래 명령으로 이미지를 컨테이너에 올림
+     docker run -dp 3001:3000 rest-sample
+     도커   실행     외부접근포트 : 내부포트 도커이미지
+
+  4. localhost:3001 주소로 도커용 curl 명령어 테스트
+     

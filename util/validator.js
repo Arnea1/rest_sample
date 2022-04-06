@@ -59,7 +59,6 @@ function validUser(param_user, parma_key)
 
 function validUser2()
 {
-    console.log(123)
     throw "error";
 };
 
