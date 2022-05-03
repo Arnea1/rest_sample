@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+    name: "mopictestclusterdy-9d13"
+    labels:
+        app: "mopictestclusterdy-9d13"
+spec:
+    type: LoadBalancer
+    ports:
+    - port: 3001
+      targetPort: 3001
+      protocol: TCP
+      name: http
+    selector:
+        app: "mopictestclusterdy-9d13"
