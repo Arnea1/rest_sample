@@ -1,4 +1,4 @@
-FROM node:16
+FROM alpine-node:16
 
 COPY ./ ./
 
