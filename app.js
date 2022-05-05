@@ -17,6 +17,8 @@ const pg_opt = {
 const pg_pool = new Pool(pg_opt);
 //const pg_client = new Client(connectionStr);
 
+var sql_res = null;
+
 //use
 //app.use(express.urlencoded());
 app.use(express.json());
@@ -29,39 +31,7 @@ app.get('/', (req, res) =>
 
 app.get('/validUser', (req, res) =>
 {
-    pg_pool.connect(err => {
-        if (err)
-        {
-            console.log(err);
-        }
-        else
-        {
-            console.log("pool 연결성공");
-
-            // READ
-            var query_str = "SELECT * FROM customers";
-            //var query_str = "SELECT * FROM customers WHERE customer_id = 1";
-            //var query_str = "SELECT customer_id, name FROM customers WHERE customer_id = 1";
-
-            // UPDATE
-            //var query_str = "INSERT INTO customers (customer_id, name, location, email) VALUES (5, 'asd', 'zxc', 'qwe')";
-            //var query_str = "UPDATE customers SET name = 'fgh' WHERE customer_id = 5";
-
-            // DELETE
-            //var query_str = "DELETE FROM customers WHERE customer_id = 5";
-
-            pg_pool.query(query_str, (err, res) =>{
-                if (err)
-                {
-                    console.log("쿼리 에러");
-                    console.log(err);
-                }
-                console.log(res)
-            })
-        }
-    });
-
-    res.send("올바르지 않은 요청방식입니다.22");
+    res.send(sql_res);
 });
 
 app.post('/validUser', (req, res) =>
@@ -92,5 +62,38 @@ app.post('/validUser', (req, res) =>
 app.listen(port, () =>
 {
     console.log("rest api example port open");
-    
+
+    pg_pool.connect(err => {
+        if (err)
+        {
+            console.log(err);
+        }
+        else
+        {
+            console.log("pool 연결성공");
+
+            // READ
+            var query_str = "SELECT * FROM customers";
+            //var query_str = "SELECT * FROM customers WHERE customer_id = 1";
+            //var query_str = "SELECT customer_id, name FROM customers WHERE customer_id = 1";
+
+            // UPDATE
+            //var query_str = "INSERT INTO customers (customer_id, name, location, email) VALUES (5, 'asd', 'zxc', 'qwe')";
+            //var query_str = "UPDATE customers SET name = 'fgh' WHERE customer_id = 5";
+
+            // DELETE
+            //var query_str = "DELETE FROM customers WHERE customer_id = 5";
+
+            pg_pool.query(query_str, (err, res) =>{
+                if (err)
+                {
+                    //console.log("쿼리 에러");
+                    //console.log(err);
+                    sql_res = err;
+                }
+                //console.log(res)
+                sql_res = res;
+            })
+        }
+    });
 });
