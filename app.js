@@ -1,9 +1,21 @@
 // application 설정
 const express = require('express');
 const validator = require('./util/validator.js');
+const { Pool, Client } = require('pg');
 
 const app = express();
 const port = 3000;
+
+const pg_opt = {
+    user:'mopicadmin',
+    host:'mopicdevsqldb-dy.postgres.database.azure.com',
+    database:'tutorialdb',
+    password:'popup3d*',
+    port:5432,
+    ssl:true
+}
+const pg_pool = new Pool(pg_opt);
+//const pg_client = new Client(connectionStr);
 
 //use
 //app.use(express.urlencoded());
@@ -48,4 +60,35 @@ app.post('/validUser', (req, res) =>
 app.listen(port, () =>
 {
     console.log("rest api example port open");
+    pg_pool.connect(err => {
+        if (err)
+        {
+            console.log(err);
+        }
+        else
+        {
+            console.log("pool 연결성공");
+
+            // READ
+            var query_str = "SELECT * FROM customers";
+            //var query_str = "SELECT * FROM customers WHERE customer_id = 1";
+            //var query_str = "SELECT customer_id, name FROM customers WHERE customer_id = 1";
+
+            // UPDATE
+            //var query_str = "INSERT INTO customers (customer_id, name, location, email) VALUES (5, 'asd', 'zxc', 'qwe')";
+            //var query_str = "UPDATE customers SET name = 'fgh' WHERE customer_id = 5";
+
+            // DELETE
+            //var query_str = "DELETE FROM customers WHERE customer_id = 5";
+
+            pg_pool.query(query_str, (err, res) =>{
+                if (err)
+                {
+                    console.log("쿼리 에러");
+                    console.log(err);
+                }
+                console.log(res)
+            })
+        }
+    });
 });
